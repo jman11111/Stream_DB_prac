@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -45,7 +44,6 @@ public class DBtest {
     }
 
     static public ResultSet dbQuery(String inputquery){
-        System.out.println("hello");
 
         Connection connection=null;
         ResultSet res;
@@ -54,7 +52,7 @@ public class DBtest {
             connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres","root");
 
             if(connection !=null){
-                System.out.println("we good");
+                System.out.println("Good Connection");
             }
 
             try {
@@ -64,11 +62,11 @@ public class DBtest {
                 res = statement.executeQuery(query);
                 return res;
             }catch (Exception e){
-                System.out.println("failed to create table");
+                System.out.println("failed to execute Query");
             }
 
         }catch(Exception e){
-            System.out.println("fail");
+            System.out.println("failure");
         }
         return null;
     }
