@@ -1,11 +1,13 @@
+import java.util.Optional;
+
 public class Card{
 
     private String name;
     private String rarity;
-    private String expansionName;
+    private Optional<String> expansionName;
     private int value;
 
-    public Card(String cardname,String cardrarity,String expansion,int cardval){
+    public Card(String cardname,String cardrarity,Optional<String> expansion,int cardval){
         this.name = cardname;
         this.rarity = cardrarity;
         this.expansionName = expansion;
@@ -20,7 +22,7 @@ public class Card{
         this.rarity = rarity;
     }
 
-    public void setExpansionName(String expansionName) {
+    public void setExpansionName(Optional<String> expansionName) {
         this.expansionName = expansionName;
     }
 
@@ -37,7 +39,11 @@ public class Card{
     }
 
     public String getExpansionName() {
-        return expansionName;
+        if(expansionName.isPresent()){
+            return expansionName.get();
+        }else{
+            return "None Specified";
+        }
     }
 
     public int getValue() {
@@ -45,6 +51,10 @@ public class Card{
     }
 
     public String toString(){
-        return "Name = " + this.name + ", Rarity = " + this.rarity + ", Expansion = " + this.expansionName + ", Value = " + this.value;
+        if(this.expansionName.isPresent()){
+            return "Name = " + this.name + ", Rarity = " + this.rarity + ", Expansion = " + this.expansionName.get() + ", Value = " + this.value;
+        }else{
+            return "Name = " + this.name + ", Rarity = " + this.rarity + ", Expansion = None Specified" + ", Value = " + this.value;
+        }
     }
 }

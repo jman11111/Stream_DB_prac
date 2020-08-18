@@ -2,7 +2,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 //"INSERT INTO cards(cardname,cardrarity,expansion,cardvalue)"
@@ -10,36 +12,42 @@ import java.util.stream.Stream;
 public class DBtest {
     public static void main(String[] args){
 
-        String queryStr = "select * from cards";
-        ResultSet rs = dbQuery(queryStr);
-        Card[] arrToStream = new Card[5];
-        int counter = 0;
 
+        ArrayList<Card> arrToStream = new ArrayList<Card>();
+        int counter = 0;
+        System.out.println("here");
         try {
+            String queryStr = "select * from cards";
+            ResultSet rs = dbQuery(queryStr);
             while (rs.next()) {
 
                 String cardname = rs.getString("cardname");
                 String rarity = rs.getString("cardrarity");
-                String expansion = rs.getString("expansion");
+                Optional<String> expansion = Optional.ofNullable(rs.getString("expansion"));
                 int cardval = rs.getInt("cardvalue");
 
                 Card cardStreamElement = new Card(cardname,rarity,expansion,cardval);
-                arrToStream[counter] = cardStreamElement;
+                arrToStream.add(cardStreamElement);
                 counter++;
-
-                //System.out.printf("Name = %s , Rarity = %s, Expansion = %s Value = %d", cardname, rarity, expansion, cardval);
+                System.out.println(rs.getRow());
+                //System.out.printf("Name = %s , Rarity = %s, Expansion = %s Value = %d", cardname, rarity, expansion.get(), cardval);
 
                 //System.out.println();
 
             }
         }catch(Exception e){
-
+            System.out.println(e.toString());
         }
 
-        Stream<Card> testStream = Arrays.stream(arrToStream);
-        Stream<Card> printStream = testStream.filter(c -> c.getExpansionName().equals("FanningFlames"));
+        Stream<Card> testStream = arrToStream.stream();
+        testStream.forEach(c -> System.out.println(c.toString()));
+        System.out.println();
 
-        printStream.forEach(c -> System.out.println(c.toString()));
+        Stream<Card> testFilterStream = arrToStream.stream().filter(c -> c.getExpansionName().equals("FanningFlames"));
+        testFilterStream.forEach(c -> System.out.println(c.toString()));
+
+
+
 
     }
 
