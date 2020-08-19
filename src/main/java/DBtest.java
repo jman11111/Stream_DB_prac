@@ -23,7 +23,7 @@ public class DBtest {
 
                 String cardname = rs.getString("cardname");
                 String rarity = rs.getString("cardrarity");
-                Optional<String> expansion = Optional.ofNullable(rs.getString("expansion"));
+                String expansion = rs.getString("expansion");
                 int cardval = rs.getInt("cardvalue");
 
                 Card cardStreamElement = new Card(cardname,rarity,expansion,cardval);
@@ -36,7 +36,8 @@ public class DBtest {
 
             }
         }catch(Exception e){
-            System.out.println(e.toString());
+            e.printStackTrace();
+            System.out.println("dont know");
         }
 
         Stream<Card> testStream = arrToStream.stream();
@@ -70,10 +71,12 @@ public class DBtest {
                 res = statement.executeQuery(query);
                 return res;
             }catch (Exception e){
+                e.printStackTrace();
                 System.out.println("failed to execute Query");
             }
 
         }catch(Exception e){
+            e.printStackTrace();
             System.out.println("failure");
         }
         return null;

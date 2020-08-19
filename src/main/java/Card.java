@@ -7,10 +7,10 @@ public class Card{
     private Optional<String> expansionName;
     private int value;
 
-    public Card(String cardname,String cardrarity,Optional<String> expansion,int cardval){
+    public Card(String cardname,String cardrarity,String expansion,int cardval){
         this.name = cardname;
         this.rarity = cardrarity;
-        this.expansionName = expansion;
+        this.expansionName = Optional.ofNullable(expansion);
         this.value = cardval;
     }
 
@@ -22,8 +22,8 @@ public class Card{
         this.rarity = rarity;
     }
 
-    public void setExpansionName(Optional<String> expansionName) {
-        this.expansionName = expansionName;
+    public void setExpansionName(String expansionName) {
+        this.expansionName = Optional.ofNullable(expansionName);
     }
 
     public void setValue(int value) {
@@ -39,10 +39,11 @@ public class Card{
     }
 
     public String getExpansionName() {
-        if(expansionName.isPresent()){
-            return expansionName.get();
-        }else{
-            return "None Specified";
+        try {
+            return expansionName.orElse("None Specified");
+        }catch(Exception e){
+            e.printStackTrace();
+            return "We messed up";
         }
     }
 
